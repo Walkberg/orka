@@ -9,9 +9,12 @@ import { HasherService } from './domain/hasher.service';
 import { TokenVerifierService } from './domain/token-verifier.service';
 import { RegisterUseCase } from './application/usecases/register.usecase';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { JwtAuthGuard } from './infrastructure/jwt-auth.guard';
 
 @Module({
   controllers: [AuthController],
+  exports: [JwtService, JwtAuthGuard],
+
   providers: [
     LoginUseCase,
     RegisterUseCase,
@@ -19,6 +22,7 @@ import { PrismaService } from 'src/infra/prisma/prisma.service';
     PrismaUserRepository,
     BcryptHasherService,
     JwtService,
+    JwtAuthGuard,
     {
       provide: IUserRepository,
       useClass: PrismaUserRepository,
