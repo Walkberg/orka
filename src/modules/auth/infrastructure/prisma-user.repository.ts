@@ -8,14 +8,16 @@ export class PrismaUserRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    const record = await this.prisma.user.findUnique({ where: { email } });
+    const record = await this.prisma.user.findUnique({
+      where: { email },
+    });
     return record
       ? new User(
           record.id,
           record.email,
           record.password,
-          record.firstName,
-          record.lastName,
+          record.firstName ?? undefined,
+          record.lastName ?? undefined,
         )
       : null;
   }
@@ -40,8 +42,8 @@ export class PrismaUserRepository implements IUserRepository {
       record.id,
       record.email,
       record.password,
-      record.firstName,
-      record.lastName,
+      record.firstName ?? undefined,
+      record.lastName ?? undefined,
     );
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { IUserRepository } from '../../domain/user.repository';
+import { IUserRepository } from '../../domain/user.repository';
 import { HasherService } from '../../domain/hasher.service';
 import { TokenVerifierService } from '../../domain/token-verifier.service';
 
@@ -11,8 +11,8 @@ interface LoginCommand {
 @Injectable()
 export class LoginUseCase {
   constructor(
-    private readonly userRepository: IUserRepository,
     private readonly hasherService: HasherService,
+    private readonly userRepository: IUserRepository,
     private readonly tokenVerifierService: TokenVerifierService,
   ) {}
 
