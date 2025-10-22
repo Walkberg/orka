@@ -17,7 +17,7 @@ import { DeleteApplicationUseCase } from '../application/usecases/delete-applica
 import { JwtAuthGuard } from 'src/modules/auth/infrastructure/jwt-auth.guard';
 
 @Controller('applications')
-@UseGuards(JwtAuthGuard) // protège toutes les routes du contrôleur
+@UseGuards(JwtAuthGuard)
 export class ApplicationController {
   constructor(
     private readonly createApplicationUseCase: CreateApplicationUseCase,

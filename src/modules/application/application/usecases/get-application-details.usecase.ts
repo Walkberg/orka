@@ -13,6 +13,7 @@ export class GetApplicationDetailsUseCase {
     if (app.ownerId !== userId) {
       throw new Error('Unauthorized');
     }
+
     return app;
   }
 }

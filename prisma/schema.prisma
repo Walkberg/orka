@@ -25,6 +25,7 @@ model User {
 
   applications   Application[]      @relation("UserApplications") 
   memberships    OrganizationMember[] 
+  createdOrganizations Organization[] @relation("CreatedByUser")
 
   @@index([email])
   ApplicationUser ApplicationUser[]
@@ -68,6 +69,9 @@ model Organization {
   logoUrl        String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
+
+  createdBy      String
+  createdByUser  User             @relation("CreatedByUser", fields: [createdBy], references: [id])
 
   applicationId  String
   application    Application        @relation(fields: [applicationId], references: [id])
