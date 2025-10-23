@@ -1,8 +1,11 @@
 export class User {
   constructor(
-    public readonly id: string,
-    public readonly email: string,
-    public readonly password: string,
-    public readonly name?: string,
+    public id: string,
+    public email: string,
+    public firstname: string | null,
+    public lastname: string | null,
+    public avatarUrl: string | null,
+    public createdAt: Date,
+    public updatedAt: Date,
   ) {}
 }
