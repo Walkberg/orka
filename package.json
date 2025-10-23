@@ -1,0 +1,11 @@
+{
+  "name": "orka",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+   "scripts": {
+    "build": "pnpm --filter @orka run build",
+    "dev": "pnpm --filter orka-example run dev"
+  }
+}
