@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "orka-react": path.resolve(__dirname, "../orka-react/src"),
+      "@orka-react": path.resolve(__dirname, "../../libs/orka-react/src"),
     },
   },
 });
