@@ -10,6 +10,10 @@
     "dev": "pnpm --filter orka-example run dev"
   },
   "devDependencies": {
+    "@nx/eslint": "^22.0.1",
+    "@nx/jest": "^22.0.1",
+    "@nx/nest": "^22.0.1",
+    "@nx/react": "^22.0.1",
     "nx": "22.0.1"
   }
 }
