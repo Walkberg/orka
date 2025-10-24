@@ -1,11 +1,15 @@
 {
   "name": "orka",
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "apps/*"
   ],
-   "scripts": {
+  "scripts": {
     "build": "pnpm --filter @orka run build",
     "dev": "pnpm --filter orka-example run dev"
+  },
+  "devDependencies": {
+    "nx": "22.0.1"
   }
 }
