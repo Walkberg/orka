@@ -1,11 +1,11 @@
-import axios from "@/api/client";
+import axios from '../api/client';
 import {
   createContext,
   useContext,
   useState,
   useEffect,
   type ReactNode,
-} from "react";
+} from 'react';
 
 type User = {
   id: string;
@@ -26,19 +26,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const OrkaProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
+    localStorage.getItem('token')
   );
 
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchProfile();
     }
   }, [token]);
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get("/users/me");
+      const res = await axios.get('/users/me');
       setUser(res.data);
     } catch {
       logout();
@@ -46,11 +46,11 @@ export const OrkaProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post("/auth/login", { email, password });
+    const res = await axios.post('/auth/login', { email, password });
 
     const { accessToken } = res.data;
 
-    localStorage.setItem("token", accessToken);
+    localStorage.setItem('token', accessToken);
 
     setToken(accessToken);
   };
@@ -59,7 +59,7 @@ export const OrkaProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setToken(null);
 
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
   };
 
   return (
@@ -75,7 +75,7 @@ export const useAuth = () => {
   const ctx = useContext(AuthContext);
 
   if (!ctx) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error('useAuth must be used within AuthProvider');
   }
 
   return ctx;

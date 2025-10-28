@@ -1,5 +1,5 @@
-import { useAuth } from "@/providers/OrkaProvider";
-import type { ReactNode } from "react";
+import { useAuth } from '../../providers/OrkaProvider';
+import type { ReactNode } from 'react';
 
 export const SignedIn = ({ children }: { children: ReactNode }) => {
   const { isSignedIn } = useAuth();
