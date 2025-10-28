@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   return (
     <>
+      coool
       <SignedIn>signed in</SignedIn>
       <SignedOut>signed out</SignedOut>
     </>
