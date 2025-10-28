@@ -1,5 +1,5 @@
-import { SignedIn, SignedOut } from "@orka-react";
-import "./App.css";
+import { SignedIn, SignedOut } from '@orka-react';
+import './App.css';
 
 function App() {
   return (

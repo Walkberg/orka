@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@orka-react": ["/libs/orka-react/src/index.ts"]
+      "@orka-react": ["libs/orka-react/src"],
+      //"@orka-react/*": ["libs/orka-react/src/*"]
     }
   }
 }
