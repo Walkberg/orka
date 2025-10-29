@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@orka-react": ["libs/orka-react/src"],
       "@walkberg-ui": ["libs/ui/src/index.ts"],

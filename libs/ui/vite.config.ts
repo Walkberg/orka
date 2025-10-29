@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts';
 import * as path from 'path';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(() => ({
   root: __dirname,
@@ -18,13 +19,27 @@ export default defineConfig(() => ({
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
       pathsToAliases: false,
     }),
+    tailwindcss(),
   ],
+  compilerOptions: {
+    baseUrl: '.',
+    paths: {
+      '@/*': ['./*'],
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
+  // tailwind: {
+  //   config: '',
+  //   css: 'libs/ui/src/globals.css',
+  //   baseColor: 'neutral',
+  //   cssVariables: true,
+  //   prefix: '',
+  // },
   build: {
     outDir: '../../dist/libs/ui',
     emptyOutDir: true,

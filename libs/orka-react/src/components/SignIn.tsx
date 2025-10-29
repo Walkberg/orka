@@ -39,7 +39,7 @@ export const SignIn = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit" className="w-full">
+            <Button variant="outline" type="submit" className="w-full">
               Se connecter
             </Button>
           </form>
