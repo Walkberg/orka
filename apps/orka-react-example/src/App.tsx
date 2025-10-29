@@ -1,4 +1,4 @@
-import { OrkaProvider, SignedIn, SignedOut } from '@orka-react';
+import { OrkaProvider, SignedIn, SignedOut, SignIn } from '@orka-react';
 import './App.css';
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
     <OrkaProvider>
       <SignedIn>signed in</SignedIn>
       <SignedOut>signed out</SignedOut>
+      <SignIn />
     </OrkaProvider>
   );
 }

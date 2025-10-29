@@ -2,7 +2,8 @@
   "compilerOptions": {
     "paths": {
       "@orka-react": ["libs/orka-react/src"],
-      //"@orka-react/*": ["libs/orka-react/src/*"]
+      "@walkberg-ui": ["libs/ui/src/index.ts"],
+      "@walkberg-ui/*": ["libs/ui/src/*"]
     }
   }
 }

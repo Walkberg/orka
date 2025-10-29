@@ -1,8 +1,13 @@
 import { useAuth } from '../providers/OrkaProvider';
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+import {
+  Button,
+  Input,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@walkberg-ui';
 
 export const SignIn = () => {
   const { login } = useAuth();
