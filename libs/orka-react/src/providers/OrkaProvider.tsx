@@ -1,4 +1,3 @@
-import { todo } from 'node:test';
 import axios from '../api/client';
 import {
   createContext,
@@ -7,75 +6,37 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
+import { OrkaAuthProvider } from './OrkaAuthProvider';
+import { OrkaOrganizationProvider } from './OrkaOrganizationProvider';
 
-type User = {
-  id: string;
-  email: string;
-  name?: string;
+type OrkaStatus = 'loading' | 'ready' | 'error' | 'degraded';
+
+type OrkaContextType = {
+  appName: string;
+  status: OrkaStatus;
 };
 
-type AuthContextType = {
-  user: User | null;
-  token: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  isSignedIn: boolean;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<OrkaContextType | undefined>(undefined);
 
 export const OrkaProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem('token')
-  );
-
-  console.log('OrkaProvider render', { user, token });
-
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchProfile();
-    }
-  }, [token]);
-
-  const fetchProfile = async () => {
-    console.log('fetching profile');
-    try {
-      const res = await axios.get('/users/me');
-      setUser(res.data);
-    } catch {
-      logout();
-    }
-  };
-
-  const login = async (email: string, password: string) => {
-    const res = await axios.post('/auth/login', { email, password });
-
-    const { accessToken } = res.data;
-
-    localStorage.setItem('token', accessToken);
-
-    setToken(accessToken);
-  };
-
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-
-    localStorage.removeItem('token');
-  };
+  const [status, setStatus] = useState<OrkaStatus>('loading');
+  const [appName] = useState('Orka React Example');
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, isSignedIn: !!user }}
+      value={{
+        appName,
+        status,
+      }}
     >
-      {children}
+      <OrkaAuthProvider>
+        <OrkaOrganizationProvider>{children}</OrkaOrganizationProvider>
+      </OrkaAuthProvider>
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
+export const useOrka = () => {
   const ctx = useContext(AuthContext);
 
   if (!ctx) {
