@@ -1,4 +1,4 @@
-import { useAuth } from '../../providers/OrkaProvider';
+import { useAuth } from '../providers/OrkaProvider';
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';

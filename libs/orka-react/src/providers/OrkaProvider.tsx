@@ -1,3 +1,4 @@
+import { todo } from 'node:test';
 import axios from '../api/client';
 import {
   createContext,
@@ -29,6 +30,8 @@ export const OrkaProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem('token')
   );
 
+  console.log('OrkaProvider render', { user, token });
+
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -37,6 +40,7 @@ export const OrkaProvider = ({ children }: { children: ReactNode }) => {
   }, [token]);
 
   const fetchProfile = async () => {
+    console.log('fetching profile');
     try {
       const res = await axios.get('/users/me');
       setUser(res.data);
