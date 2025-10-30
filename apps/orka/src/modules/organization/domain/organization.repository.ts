@@ -12,6 +12,8 @@ export abstract class IOrganizationRepository {
 
   abstract findByApplication(applicationId: string): Promise<Organization[]>;
 
+  abstract findByUserId(userId: string): Promise<Organization[]>;
+
   abstract update(
     id: string,
     data: Partial<Pick<Organization, 'name' | 'description'>>,

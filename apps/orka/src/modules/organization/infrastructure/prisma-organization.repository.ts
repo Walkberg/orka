@@ -62,6 +62,33 @@ export class PrismaOrganizationRepository implements IOrganizationRepository {
     );
   }
 
+  async findByUserId(userId: string): Promise<Organization[]> {
+    const organizations = await this.prisma.organization.findMany({
+      where: {
+        members: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+      include: {
+        members: true,
+      },
+    });
+
+    return organizations.map(
+      (o) =>
+        new Organization(
+          o.id,
+          o.name,
+          o.description,
+          o.applicationId,
+          o.createdBy,
+          o.createdAt,
+        ),
+    );
+  }
+
   async update(
     id: string,
     data: Partial<Pick<Organization, 'name' | 'description'>>,

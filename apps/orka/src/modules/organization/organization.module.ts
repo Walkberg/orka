@@ -14,6 +14,7 @@ import { UpdateOrganizationUseCase } from './application/usecases/update-organiz
 import { DeleteOrganizationUseCase } from './application/usecases/delete-organization.usecase';
 import { JoinOrganizationUseCase } from './application/usecases/join-organization.usecase';
 import { LeaveOrganizationUseCase } from './application/usecases/leave-organization.usecase';
+import { GetUserOrganizationsUseCase } from './application/usecases/get-user-organizations.usecase';
 
 @Module({
   imports: [AuthModule],
@@ -21,7 +22,6 @@ import { LeaveOrganizationUseCase } from './application/usecases/leave-organizat
   providers: [
     PrismaService,
     PrismaOrganizationRepository,
-
     CreateOrganizationUseCase,
     ListOrganizationsUseCase,
     GetOrganizationDetailsUseCase,
@@ -29,7 +29,7 @@ import { LeaveOrganizationUseCase } from './application/usecases/leave-organizat
     DeleteOrganizationUseCase,
     JoinOrganizationUseCase,
     LeaveOrganizationUseCase,
-
+    GetUserOrganizationsUseCase,
     {
       provide: IOrganizationRepository,
       useClass: PrismaOrganizationRepository,

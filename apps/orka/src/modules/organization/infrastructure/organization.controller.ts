@@ -17,6 +17,7 @@ import { UpdateOrganizationUseCase } from '../application/usecases/update-organi
 import { DeleteOrganizationUseCase } from '../application/usecases/delete-organization.usecase';
 import { JoinOrganizationUseCase } from '../application/usecases/join-organization.usecase';
 import { LeaveOrganizationUseCase } from '../application/usecases/leave-organization.usecase';
+import { GetUserOrganizationsUseCase } from '../application/usecases/get-user-organizations.usecase';
 
 @UseGuards(JwtAuthGuard)
 @Controller('organizations')
@@ -29,6 +30,7 @@ export class OrganizationController {
     private readonly deleteOrganizationUseCase: DeleteOrganizationUseCase,
     private readonly joinOrganizationUseCase: JoinOrganizationUseCase,
     private readonly leaveOrganizationUseCase: LeaveOrganizationUseCase,
+    private readonly getUserOrganizationsUseCase: GetUserOrganizationsUseCase,
   ) {}
 
   @Post()
@@ -53,6 +55,13 @@ export class OrganizationController {
     const organizations =
       await this.listOrganizationsUseCase.execute(applicationId);
     return { data: organizations };
+  }
+
+  @Get('me')
+  async getMyOrganizations(@Req() req) {
+    const userId = req.user.id;
+    const orgs = await this.getUserOrganizationsUseCase.execute(userId);
+    return { organizations: orgs };
   }
 
   @Get(':id')
