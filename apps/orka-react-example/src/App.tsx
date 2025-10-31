@@ -1,4 +1,5 @@
 import {
+  CreateOrganization,
   OrganizationSwitcher,
   OrkaProvider,
   SignedIn,
@@ -19,6 +20,7 @@ function App() {
           Bienvenue dans mon application
           <UserButton />
           <OrganizationSwitcher />
+          <CreateOrganization />
         </div>
       </SignedIn>
       <SignedOut>

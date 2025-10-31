@@ -37,10 +37,10 @@ export const OrganizationSwitcher = () => {
   };
 
   return (
-    <div className="space-y-5 w-full max-w-sm">
+    <Card className="space-y-5 w-full max-w-sm">
       {currentOrganization && (
-        <Card className="border border-border shadow-sm">
-          <CardContent className="flex items-start justify-between p-4">
+        <div className="border border-border shadow-sm">
+          <div className="flex items-start justify-between p-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <Building2 className="h-5 w-5 text-primary" />
@@ -66,8 +66,8 @@ export const OrganizationSwitcher = () => {
             >
               <Settings className="h-4 w-4 text-muted-foreground" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
       <Separator />
       <div className="space-y-1">
@@ -135,6 +135,6 @@ export const OrganizationSwitcher = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </Card>
   );
 };
