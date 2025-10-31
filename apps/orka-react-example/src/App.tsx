@@ -3,7 +3,7 @@ import './index.css';
 
 function App() {
   return (
-    <OrkaProvider>
+    <OrkaProvider publishableKey="test">
       <SignedIn>signed in</SignedIn>
       <SignedOut>signed out</SignedOut>
       <SignIn />

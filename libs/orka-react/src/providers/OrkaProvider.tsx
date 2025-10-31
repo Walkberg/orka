@@ -18,7 +18,13 @@ type OrkaContextType = {
 
 const AuthContext = createContext<OrkaContextType | undefined>(undefined);
 
-export const OrkaProvider = ({ children }: { children: ReactNode }) => {
+export const OrkaProvider = ({
+  children,
+  publishableKey,
+}: {
+  children: ReactNode;
+  publishableKey: string;
+}) => {
   const [status, setStatus] = useState<OrkaStatus>('loading');
   const [appName] = useState('Orka React Example');
 
