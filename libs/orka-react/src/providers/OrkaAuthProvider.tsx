@@ -6,34 +6,17 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
-
-type User = {
-  id: string;
-  email: string;
-  name?: string;
-};
+import { useOrka } from './OrkaProvider';
+import { LoginArgs, RegisterArgs, User } from '../api/orka-client';
 
 type AuthContextType = {
   user: User | null;
   token: string | null;
-  login: (args: LoginType) => Promise<void>;
+  login: (args: LoginArgs) => Promise<void>;
   logout: () => void;
   isSignedIn: boolean;
-  signup: (args: SignupType) => Promise<void>;
+  signup: (args: RegisterArgs) => Promise<void>;
 };
-
-interface LoginType {
-  email: string;
-  password: string;
-}
-
-interface SignupType {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  username: string;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -43,24 +26,29 @@ export const OrkaAuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.getItem('token')
   );
 
+  const { orkaClient } = useOrka();
+
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      orkaClient.setToken(token);
+      console.log('Fetching profile with token:', token);
+      orkaClient.getProfile().then((profile) => {
+        setUser(profile);
+      });
     }
   }, [token]);
 
-  const login = async (args: LoginType) => {
-    const res = await axios.post('/auth/login', args);
+  const login = async (args: LoginArgs) => {
+    const { token, user } = await orkaClient.login(args);
 
-    const { accessToken } = res.data;
+    localStorage.setItem('token', token);
 
-    localStorage.setItem('token', accessToken);
-
-    setToken(accessToken);
+    setToken(token);
+    setUser(user);
   };
 
-  const signup = async (args: SignupType) => {
-    //todo('implement signup');
+  const signup = async (args: RegisterArgs) => {
+    await orkaClient.register(args);
   };
 
   const logout = () => {
@@ -77,7 +65,7 @@ export const OrkaAuthProvider = ({ children }: { children: ReactNode }) => {
         token,
         login,
         logout,
-        isSignedIn: !!user,
+        isSignedIn: !!token,
         signup,
       }}
     >

@@ -1,21 +1,18 @@
 import axios from '../api/client';
-import { createContext, useContext, useState, type ReactNode } from 'react';
-
-type Organization = {
-  id: string;
-  name: string;
-  description?: string;
-};
-
-interface CreateOrganizationType {
-  name: string;
-  description?: string;
-}
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
+import { useOrka } from './OrkaProvider';
+import { Organization, OrganizationNew } from '../api/orka-client';
 
 type OrganizationContextType = {
   organizations: Organization[];
   currentOrganization?: Organization;
-  createOrganization: (args: CreateOrganizationType) => Promise<void>;
+  createOrganization: (args: OrganizationNew) => Promise<void>;
   switchOrganization: (organizationId: string) => void;
 };
 
@@ -33,8 +30,23 @@ export const OrkaOrganizationProvider = ({
   >(null);
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
-  const createOrganization = async (args: CreateOrganizationType) => {
-    const res = await axios.post('/organizations', args);
+  const { orkaClient } = useOrka();
+
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      const orgs = await orkaClient.getUserOrganizations();
+
+      console.log('Fetched organizations:', orgs);
+      setOrganizations(orgs);
+      if (orgs.length > 0) {
+        setCurrentOrganizationId(orgs[0].id);
+      }
+    };
+    fetchOrganizations();
+  }, [orkaClient]);
+
+  const createOrganization = async (args: OrganizationNew) => {
+    const res = await orkaClient.createOrganization(args);
     setOrganizations((prev) => [...prev, res.data]);
   };
 
@@ -44,7 +56,14 @@ export const OrkaOrganizationProvider = ({
 
   return (
     <OrganizationContext.Provider
-      value={{ organizations, createOrganization, switchOrganization }}
+      value={{
+        organizations,
+        createOrganization,
+        switchOrganization,
+        currentOrganization: organizations.find(
+          (org) => org.id === currentOrganizationId
+        ),
+      }}
     >
       {children}
     </OrganizationContext.Provider>

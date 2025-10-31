@@ -1,4 +1,4 @@
-import { useOrganization } from '@/providers/OrkaOrganizationProvider';
+import { useOrganization } from '../providers/OrkaOrganizationProvider';
 
 export const OrganizationList = () => {
   const { organizations } = useOrganization();

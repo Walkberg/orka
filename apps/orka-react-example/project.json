@@ -6,5 +6,5 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project orka-react-example --web",
   "targets": {},
-  "implicitDependencies": ["@orka-react", "@walkberg-ui"]
+  "implicitDependencies": []
 }

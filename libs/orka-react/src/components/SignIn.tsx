@@ -59,6 +59,7 @@ export const SignIn = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <Button
+                    disabled={!password || !email}
                     type="submit"
                     className="w-full"
                     onClick={handleSubmit}

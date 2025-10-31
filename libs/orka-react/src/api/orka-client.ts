@@ -9,11 +9,26 @@ export type RegisterArgs = {
 };
 
 export type AccessTokenResponse = {
-  accessToken: string;
+  token: string;
+  user: User;
+};
+
+export type User = {
+  id: string;
+  email: string;
+  username?: string;
+  firstname: string;
+  avatarUrl?: string;
+  lastname: string;
 };
 
 export type OrganizationNew = {
-  applicationId: string;
+  name: string;
+  description?: string;
+};
+
+export type Organization = {
+  id: string;
   name: string;
   description?: string;
 };
@@ -23,7 +38,7 @@ export interface IOrkaClient {
 
   register(args: RegisterArgs): Promise<any>;
 
-  getProfile(): Promise<any>;
+  getProfile(): Promise<User>;
 
   updateProfile(data: any): Promise<any>;
 
@@ -31,10 +46,14 @@ export interface IOrkaClient {
 
   getOrganizationById(id: string): Promise<any>;
 
+  getUserOrganizations(): Promise<Organization[]>;
+
   updateOrganization(
     id: string,
     data: { name?: string; description?: string }
   ): Promise<any>;
+
+  setToken(token: string): void;
 
   //deleteOrganization(id: string): Promise<void>;
 

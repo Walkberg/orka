@@ -8,12 +8,15 @@ import {
 } from 'react';
 import { OrkaAuthProvider } from './OrkaAuthProvider';
 import { OrkaOrganizationProvider } from './OrkaOrganizationProvider';
+import { IOrkaClient } from '../api/orka-client';
+import { OrkaClientImpl } from '../api/orka-client.impls';
 
 type OrkaStatus = 'loading' | 'ready' | 'error' | 'degraded';
 
 type OrkaContextType = {
   appName: string;
   status: OrkaStatus;
+  orkaClient: IOrkaClient;
 };
 
 const AuthContext = createContext<OrkaContextType | undefined>(undefined);
@@ -27,12 +30,16 @@ export const OrkaProvider = ({
 }) => {
   const [status, setStatus] = useState<OrkaStatus>('loading');
   const [appName] = useState('Orka React Example');
+  const [orkaClient] = useState<IOrkaClient>(
+    new OrkaClientImpl(publishableKey)
+  );
 
   return (
     <AuthContext.Provider
       value={{
         appName,
         status,
+        orkaClient,
       }}
     >
       <OrkaAuthProvider>
