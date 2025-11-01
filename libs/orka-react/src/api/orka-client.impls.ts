@@ -6,6 +6,9 @@ import type {
   OrganizationNew,
   CreateUserArgs,
   User,
+  ApplicationUser,
+  Application,
+  ApplicationNew,
 } from './orka-client';
 import axios from './client';
 
@@ -21,20 +24,34 @@ export class OrkaClientImpl implements IOrkaClient {
       this.setToken(accessToken);
     }
   }
-  async getAppUsers(appId: string): Promise<User[]> {
-    const { data } = await this.axios.get(`/applications/${appId}/users`);
-    // Assuming the API returns an array of users directly or within a 'data' field
-    // Adjust if the actual API response structure is different.
-    return data.users || data;
+
+  async getAppUsers(appId: string): Promise<ApplicationUser[]> {
+    const { data } = await this.axios.get<ApplicationUsersResponseDto>(
+      `/applications/${appId}/users`
+    );
+
+    return data.map((appUser) => ({
+      id: appUser.userId,
+      userId: appUser.userId,
+      applicationId: appUser.appId,
+      user: {
+        lastname: 'test',
+        firstname: 'test',
+        email: 'test',
+        id: 'tets',
+      },
+    }));
   }
 
-  async createAppUser(appId: string, userData: CreateUserArgs): Promise<User> {
+  async createAppUser(
+    appId: string,
+    userData: CreateUserArgs
+  ): Promise<ApplicationUser> {
     const { data } = await this.axios.post(
       `/applications/${appId}/users`,
       userData
     );
-    // Assuming the API returns the created user object directly or within a 'data' field
-    // Adjust if the actual API response structure is different.
+
     return data.user || data;
   }
 
@@ -103,4 +120,31 @@ export class OrkaClientImpl implements IOrkaClient {
     const response = await this.axios.patch(`/organizations/${id}`, data);
     return response.data;
   }
+
+  async getUserApplications(): Promise<Application[]> {
+    const { data } = await this.axios.get<GetApplicationsResponseDto>(
+      '/applications'
+    );
+
+    return data.data.map((app) => ({ id: app.id, name: app.name }));
+  }
+
+  async createApplications(args: ApplicationNew): Promise<Application> {
+    const { data } = await this.axios.post<CreateApplicationsResponseDto>(
+      '/applications',
+      {
+        name: args.name,
+      }
+    );
+
+    return data;
+  }
 }
+
+export type ApplicationUsersResponseDto = { userId: string; appId: string }[];
+
+export type ApplicationResponse = { id: string; name: string };
+
+export type GetApplicationsResponseDto = { data: ApplicationResponse[] };
+
+export type CreateApplicationsResponseDto = ApplicationResponse;

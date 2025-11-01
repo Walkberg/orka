@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useOrka } from '@orka-react';
+import { Application, useOrka } from '@orka-react';
 import { CreateApplication } from '../components/CreateApplication';
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@walkberg-ui';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const AppListPage = () => {
   const { orkaClient } = useOrka();
-  const [applications, setApplications] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -16,9 +18,8 @@ export const AppListPage = () => {
 
   const loadApplications = async () => {
     try {
-      // @ts-ignore - axios property exists on the implementation
-      const response = await orkaClient.axios.get('/applications');
-      setApplications(response.data.data || []);
+      const applications = await orkaClient.getUserApplications();
+      setApplications(applications);
     } catch (error) {
       console.error('Error loading applications:', error);
     } finally {
@@ -28,8 +29,7 @@ export const AppListPage = () => {
 
   const handleCreateApplication = async (name: string) => {
     try {
-      // @ts-ignore - axios property exists on the implementation
-      await orkaClient.axios.post('/applications', { name });
+      await orkaClient.createApplications({ name });
       setShowCreateModal(false);
       loadApplications(); // Refresh the list
     } catch (error) {
@@ -62,7 +62,11 @@ export const AppListPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {applications.map((app) => (
-            <Card key={app.id} className="hover:shadow-md transition-shadow">
+            <Card
+              onClick={() => navigate(`/app/${app.id}/users`)}
+              key={app.id}
+              className="hover:shadow-md transition-shadow"
+            >
               <CardHeader>
                 <CardTitle>{app.name}</CardTitle>
               </CardHeader>

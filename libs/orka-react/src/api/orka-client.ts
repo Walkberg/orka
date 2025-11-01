@@ -22,6 +22,13 @@ export type User = {
   lastname: string;
 };
 
+export type ApplicationUser = {
+  id: string;
+  userId: string;
+  applicationId: string;
+  user: User;
+};
+
 export type OrganizationNew = {
   name: string;
   description?: string;
@@ -38,6 +45,15 @@ export type CreateUserArgs = {
   lastName: string;
   email: string;
   password: string;
+};
+
+export type Application = {
+  id: string;
+  name: string;
+};
+
+export type ApplicationNew = {
+  name: string;
 };
 
 export interface IOrkaClient {
@@ -60,11 +76,18 @@ export interface IOrkaClient {
     data: { name?: string; description?: string }
   ): Promise<any>;
 
-  getAppUsers(appId: string): Promise<User[]>;
+  getAppUsers(appId: string): Promise<ApplicationUser[]>;
 
-  createAppUser(appId: string, userData: CreateUserArgs): Promise<User>;
+  createAppUser(
+    appId: string,
+    userData: CreateUserArgs
+  ): Promise<ApplicationUser>;
 
   setToken(token: string): void;
+
+  getUserApplications(): Promise<Application[]>;
+
+  createApplications(args: ApplicationNew): Promise<Application>;
 
   //deleteOrganization(id: string): Promise<void>;
 

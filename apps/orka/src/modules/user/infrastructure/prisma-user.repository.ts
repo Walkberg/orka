@@ -83,7 +83,6 @@ function convertCreateCoreToDb(
   user: Partial<User>,
 ): Partial<PrismaUser> & { email: string; password: string } {
   return {
-    id: user.id,
     email: user.email ?? '',
     lastName: user.lastname,
     firstName: user.firstname,

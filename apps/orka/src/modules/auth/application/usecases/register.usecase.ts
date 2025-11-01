@@ -1,8 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IUserRepository } from '../../domain/user.repository';
-import { HasherService } from '../../domain/hasher.service';
 import { TokenVerifierService } from '../../domain/token-verifier.service';
-import { AuthUser } from '../../domain/auth-user.entity';
 import { UserService } from 'src/modules/user/domain/user.service';
 
 interface RegisterCommand {

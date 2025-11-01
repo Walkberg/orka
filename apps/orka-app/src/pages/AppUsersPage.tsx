@@ -26,13 +26,15 @@ import {
   TableBody,
   TableCell,
 } from '@walkberg-ui';
-import { User, CreateUserArgs } from '@orka-react/api/orka-client';
+import { CreateUserArgs, ApplicationUser } from '@orka-react/api/orka-client';
 
 export function AppUsersPage() {
   const { id } = useParams<{ id: string }>();
   const { orkaClient } = useOrka();
 
-  const [users, setUsers] = useState<User[]>([]);
+  const [applicationUsers, setApplicationUsers] = useState<ApplicationUser[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'email' | 'lastname' | 'default'>(
@@ -55,7 +57,7 @@ export function AppUsersPage() {
     setLoading(true);
     try {
       const fetchedUsers = await orkaClient.getAppUsers(id);
-      setUsers(fetchedUsers || []);
+      setApplicationUsers(fetchedUsers || []);
     } catch (error) {
       console.error('Error loading users:', error);
     } finally {
@@ -96,18 +98,24 @@ export function AppUsersPage() {
     setSortBy(value as 'email' | 'lastname');
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.firstname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = applicationUsers.filter(
+    (applicationUser) =>
+      applicationUser.user.email
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      applicationUser.user.firstname
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      applicationUser.user.lastname
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortBy === 'email') {
-      return a.email.localeCompare(b.email);
+      return a.user.email.localeCompare(b.user.email);
     } else if (sortBy === 'lastname') {
-      return a.lastname.localeCompare(b.lastname);
+      return a.user.lastname.localeCompare(b.user.lastname);
     }
     return 0;
   });
@@ -168,11 +176,11 @@ export function AppUsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.firstname}</TableCell>
-                    <TableCell>{user.lastname}</TableCell>
-                    <TableCell>{user.email}</TableCell>
+                {sortedUsers.map((applicationUser) => (
+                  <TableRow key={applicationUser.id}>
+                    <TableCell>{applicationUser.user.firstname}</TableCell>
+                    <TableCell>{applicationUser.user.lastname}</TableCell>
+                    <TableCell>{applicationUser.user.email}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

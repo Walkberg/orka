@@ -1,6 +1,7 @@
 import { HasherService } from 'src/modules/auth/domain/hasher.service';
 import { IUserRepository } from './user.repository';
 import { User } from './user.entity';
+import { Injectable } from '@nestjs/common';
 
 type CreateUserArgs = {
   email: string;
@@ -9,6 +10,7 @@ type CreateUserArgs = {
   lastName?: string;
 };
 
+@Injectable()
 export class UserService {
   constructor(
     private readonly hasherService: HasherService,

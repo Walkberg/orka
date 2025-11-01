@@ -12,18 +12,17 @@ import {
   GetUsersUseCase,
   CreateApplicationUserUseCase,
 } from './application/usecases';
-import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../user/user.module';
 import { IApplicationUserRepository } from './domain/application-user.repository';
 import { PrismaApplicationUserRepository } from './infrastructure/prisma-application-user.repository';
 import { UserService } from '../user/domain/user.service';
 import { ApplicationUsersController } from './infrastructure/application-user.controller';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [ApplicationController, ApplicationUsersController],
   providers: [
     PrismaService,
-    UserService,
     PrismaApplicationRepository,
     CreateApplicationUseCase,
     ListMyApplicationsUseCase,
@@ -38,6 +37,6 @@ import { ApplicationUsersController } from './infrastructure/application-user.co
       useClass: PrismaApplicationUserRepository,
     },
   ],
-  imports: [AuthModule, UserModule],
+  imports: [UserModule, AuthModule],
 })
 export class ApplicationModule {}
