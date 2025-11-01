@@ -22,11 +22,20 @@ export class OrkaClientImpl implements IOrkaClient {
     }
   }
   async getAppUsers(appId: string): Promise<User[]> {
-    throw new Error('Method not implemented.');
+    const { data } = await this.axios.get(`/applications/${appId}/users`);
+    // Assuming the API returns an array of users directly or within a 'data' field
+    // Adjust if the actual API response structure is different.
+    return data.users || data;
   }
 
   async createAppUser(appId: string, userData: CreateUserArgs): Promise<User> {
-    throw new Error('Method not implemented.');
+    const { data } = await this.axios.post(
+      `/applications/${appId}/users`,
+      userData
+    );
+    // Assuming the API returns the created user object directly or within a 'data' field
+    // Adjust if the actual API response structure is different.
+    return data.user || data;
   }
 
   setToken(token: string) {
