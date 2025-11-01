@@ -1,14 +1,16 @@
 import { AxiosInstance } from 'axios';
 import type {
   IOrkaClient,
-  LoginArgs,
-  RegisterArgs,
+  LoginRequest,
+  RegisterRequest,
   OrganizationNew,
-  CreateUserArgs,
+  CreateApplicationUserRequest,
   User,
   ApplicationUser,
   Application,
   ApplicationNew,
+  OrganizationUpdate,
+  Organization,
 } from './orka-client';
 import axios from './client';
 
@@ -44,12 +46,11 @@ export class OrkaClientImpl implements IOrkaClient {
   }
 
   async createAppUser(
-    appId: string,
-    userData: CreateUserArgs
+    req: CreateApplicationUserRequest
   ): Promise<ApplicationUser> {
     const { data } = await this.axios.post(
-      `/applications/${appId}/users`,
-      userData
+      `/applications/${req.appId}/users`,
+      req
     );
 
     return data.user || data;
@@ -62,7 +63,7 @@ export class OrkaClientImpl implements IOrkaClient {
     this.applicationId = applicationId;
   }
 
-  async login(dto: LoginArgs) {
+  async login(dto: LoginRequest) {
     const { data } = await this.axios.post('/auth/login', dto);
 
     if (data.token) {
@@ -79,22 +80,22 @@ export class OrkaClientImpl implements IOrkaClient {
     };
   }
 
-  async register(dto: RegisterArgs) {
+  async register(dto: RegisterRequest): Promise<User> {
     const { data } = await this.axios.post('/auth/register', dto);
     return data;
   }
 
-  async getProfile() {
+  async getProfile(): Promise<User> {
     const { data } = await this.axios.get('/users/me');
     return data;
   }
 
-  async updateProfile(body: any) {
+  async updateProfile(body: any): Promise<User> {
     const { data } = await this.axios.patch('/users/me', body);
     return data;
   }
 
-  async createOrganization(args: OrganizationNew) {
+  async createOrganization(args: OrganizationNew): Promise<Organization> {
     const { data } = await this.axios.post('/organizations', {
       applicationId: this.applicationId,
       name: args.name,
@@ -103,21 +104,18 @@ export class OrkaClientImpl implements IOrkaClient {
     return data;
   }
 
-  async getOrganizationById(id: string) {
+  async getOrganizationById(id: string): Promise<Organization> {
     const { data } = await this.axios.get(`/organizations/${id}`);
     return data.data;
   }
 
-  async getUserOrganizations() {
+  async getUserOrganizations(): Promise<Organization[]> {
     const response = await this.axios.get('/organizations/me');
     return response.data.organizations;
   }
 
-  async updateOrganization(
-    id: string,
-    data: { name?: string; description?: string }
-  ) {
-    const response = await this.axios.patch(`/organizations/${id}`, data);
+  async updateOrganization(req: OrganizationUpdate): Promise<Organization> {
+    const response = await this.axios.patch(`/organizations/${req.id}`, req);
     return response.data;
   }
 
@@ -148,3 +146,83 @@ export type ApplicationResponse = { id: string; name: string };
 export type GetApplicationsResponseDto = { data: ApplicationResponse[] };
 
 export type CreateApplicationsResponseDto = ApplicationResponse;
+
+export type UserDto = {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+};
+
+export type LoginResponseDto = {
+  user: UserDto;
+  token: string;
+};
+
+export type RegisterResponseDto = {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+};
+
+export type UserProfileResponseDto = UserDto;
+
+export type UpdateUserProfileResponseDto = UserDto;
+
+export type ListUsersResponseDto = { data: UserDto[] };
+
+export type GetUserByIdResponseDto = { data: UserDto };
+
+export type DeleteUserResponseDto = { message: string };
+
+export type OrganizationDto = {
+  id: string;
+  name: string;
+  description?: string;
+  applicationId: string;
+};
+
+export type CreateOrganizationResponseDto = {
+  message: string;
+  data: OrganizationDto;
+};
+
+export type ListOrganizationsResponseDto = { data: OrganizationDto[] };
+
+export type GetUserOrganizationsResponseDto = {
+  organizations: OrganizationDto[];
+};
+
+export type GetOrganizationDetailsResponseDto = { data: OrganizationDto };
+
+export type UpdateOrganizationResponseDto = {
+  message: string;
+  data: OrganizationDto;
+};
+
+export type DeleteOrganizationResponseDto = { message: string };
+
+export type JoinOrganizationResponseDto = { message: string; data: any };
+
+export type LeaveOrganizationResponseDto = { message: string; data: any };
+
+export type CreateApplicationResponseDto = {
+  message: string;
+  data: ApplicationResponse;
+};
+
+export type GetApplicationDetailsResponseDto = { data: ApplicationResponse };
+
+export type UpdateApplicationResponseDto = {
+  message: string;
+  data: ApplicationResponse;
+};
+export type DeleteApplicationResponseDto = { message: string };
+
+export type ApplicationUserResponseDto = { userId: string; appId: string };
+
+export type CreateApplicationUserResponseDto = {
+  message: string;
+  user: ApplicationUser;
+};

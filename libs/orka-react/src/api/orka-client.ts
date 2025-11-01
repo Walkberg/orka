@@ -1,15 +1,17 @@
-export type LoginArgs = {
+export type Token = string;
+
+export type LoginRequest = {
   email: string;
   password: string;
 };
 
-export type RegisterArgs = {
+export type RegisterRequest = {
   email: string;
   password: string;
 };
 
 export type AccessTokenResponse = {
-  token: string;
+  token: Token;
   user: User;
 };
 
@@ -40,7 +42,14 @@ export type Organization = {
   description?: string;
 };
 
-export type CreateUserArgs = {
+export type OrganizationUpdate = {
+  id: string;
+  name?: string;
+  description?: string;
+};
+
+export type CreateApplicationUserRequest = {
+  appId: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -57,33 +66,27 @@ export type ApplicationNew = {
 };
 
 export interface IOrkaClient {
-  login(args: LoginArgs): Promise<AccessTokenResponse>;
+  setToken(token: string): void;
 
-  register(args: RegisterArgs): Promise<any>;
+  login(args: LoginRequest): Promise<AccessTokenResponse>;
+
+  register(args: RegisterRequest): Promise<User>;
 
   getProfile(): Promise<User>;
 
-  updateProfile(data: any): Promise<any>;
+  updateProfile(data: any): Promise<User>;
 
-  createOrganization(args: OrganizationNew): Promise<any>;
+  createOrganization(args: OrganizationNew): Promise<Organization>;
 
-  getOrganizationById(id: string): Promise<any>;
+  getOrganizationById(id: string): Promise<Organization>;
 
   getUserOrganizations(): Promise<Organization[]>;
 
-  updateOrganization(
-    id: string,
-    data: { name?: string; description?: string }
-  ): Promise<any>;
+  updateOrganization(req: OrganizationUpdate): Promise<Organization>;
 
   getAppUsers(appId: string): Promise<ApplicationUser[]>;
 
-  createAppUser(
-    appId: string,
-    userData: CreateUserArgs
-  ): Promise<ApplicationUser>;
-
-  setToken(token: string): void;
+  createAppUser(req: CreateApplicationUserRequest): Promise<ApplicationUser>;
 
   getUserApplications(): Promise<Application[]>;
 

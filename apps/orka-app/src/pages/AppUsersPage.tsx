@@ -26,7 +26,10 @@ import {
   TableBody,
   TableCell,
 } from '@walkberg-ui';
-import { CreateUserArgs, ApplicationUser } from '@orka-react/api/orka-client';
+import {
+  CreateUserRequest,
+  ApplicationUser,
+} from '@orka-react/api/orka-client';
 
 export function AppUsersPage() {
   const { id } = useParams<{ id: string }>();
@@ -41,7 +44,7 @@ export function AppUsersPage() {
     'default'
   );
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newUserFormData, setNewUserFormData] = useState<CreateUserArgs>({
+  const [newUserFormData, setNewUserFormData] = useState<CreateUserRequest>({
     firstName: '',
     lastName: '',
     email: '',
@@ -84,7 +87,7 @@ export function AppUsersPage() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setNewUserFormData((prev: CreateUserArgs) => ({
+    setNewUserFormData((prev: CreateUserRequest) => ({
       ...prev,
       [name]: value,
     }));

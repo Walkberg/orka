@@ -7,15 +7,15 @@ import {
   type ReactNode,
 } from 'react';
 import { useOrka } from './OrkaProvider';
-import { LoginArgs, RegisterArgs, User } from '../api/orka-client';
+import { LoginRequest, RegisterRequest, User } from '../api/orka-client';
 
 type AuthContextType = {
   user: User | null;
   token: string | null;
-  login: (args: LoginArgs) => Promise<void>;
+  login: (args: LoginRequest) => Promise<void>;
   logout: () => void;
   isSignedIn: boolean;
-  signup: (args: RegisterArgs) => Promise<void>;
+  signup: (args: RegisterRequest) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,7 +38,7 @@ export const OrkaAuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [token]);
 
-  const login = async (args: LoginArgs) => {
+  const login = async (args: LoginRequest) => {
     const { token, user } = await orkaClient.login(args);
 
     localStorage.setItem('token', token);
@@ -47,7 +47,7 @@ export const OrkaAuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(user);
   };
 
-  const signup = async (args: RegisterArgs) => {
+  const signup = async (args: RegisterRequest) => {
     await orkaClient.register(args);
   };
 
