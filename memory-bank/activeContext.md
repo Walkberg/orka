@@ -13,7 +13,7 @@ Refactoring user management logic into a dedicated `UserModule` to improve modul
 
 ## Next Steps
 - Ensure the `User` entity and relevant repositories (e.g., `ApplicationMemberRepository`, `UserRepository`) are correctly defined and accessible across modules.
-- Update memory bank files to reflect the current state and decisions made.
+- Finalize memory bank updates to reflect the current state and decisions made.
 
 ## Active Decisions
 - The route structure `/applications/:appId/users` was maintained in the `UserController` to preserve the application context for user operations, aligning with the original client implementation. This decision might require further discussion based on the overall API design strategy.
