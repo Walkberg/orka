@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Param, Injectable } from '@nestjs/common';
-
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from '../../user/application/dto/create-user.dto';
 import { CreateApplicationUserUseCase } from '../application/usecases/create-application-users.usecase';
 import { GetUsersUseCase } from '../application/usecases/get-application-users.usecase';
 import { ApplicationUserDto } from '../application/dto/application-user.dto';
 import { ApplicationUser } from '../domain/application-user.entity';
+import { JwtAuthGuard } from 'src/modules/auth/infrastructure/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('applications/:appId/users')
 export class ApplicationUsersController {
   constructor(
