@@ -10,6 +10,7 @@ import { TokenVerifierService } from './domain/token-verifier.service';
 import { RegisterUseCase } from './application/usecases/register.usecase';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { JwtAuthGuard } from './infrastructure/jwt-auth.guard';
+import { UserService } from '../user/domain/user.service';
 
 @Module({
   controllers: [AuthController],
@@ -21,6 +22,7 @@ import { JwtAuthGuard } from './infrastructure/jwt-auth.guard';
     PrismaService,
     PrismaUserRepository,
     BcryptHasherService,
+    UserService,
     JwtService,
     JwtAuthGuard,
     {

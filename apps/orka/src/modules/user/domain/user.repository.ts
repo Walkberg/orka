@@ -7,6 +7,8 @@ export abstract class IUserRepository {
 
   abstract list(): Promise<User[]>;
 
+  abstract save(user: User): Promise<User>;
+
   abstract update(id: string, data: Partial<User>): Promise<User>;
 
   abstract delete(id: string): Promise<void>;

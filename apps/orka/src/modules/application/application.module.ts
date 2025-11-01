@@ -8,20 +8,36 @@ import { GetApplicationDetailsUseCase } from './application/usecases/get-applica
 import { UpdateApplicationUseCase } from './application/usecases/update-application.usecase';
 import { DeleteApplicationUseCase } from './application/usecases/delete-application.usecase';
 import { ApplicationController } from './infrastructure/application.controller';
+import {
+  GetUsersUseCase,
+  CreateApplicationUserUseCase,
+} from './application/usecases';
 import { AuthModule } from '../auth/auth.module';
+import { UserModule } from '../user/user.module';
+import { IApplicationUserRepository } from './domain/application-user.repository';
+import { PrismaApplicationUserRepository } from './infrastructure/prisma-application-user.repository';
+import { UserService } from '../user/domain/user.service';
+import { ApplicationUsersController } from './infrastructure/application-user.controller';
 
 @Module({
-  controllers: [ApplicationController],
+  controllers: [ApplicationController, ApplicationUsersController],
   providers: [
     PrismaService,
+    UserService,
     PrismaApplicationRepository,
     CreateApplicationUseCase,
     ListMyApplicationsUseCase,
     GetApplicationDetailsUseCase,
     UpdateApplicationUseCase,
     DeleteApplicationUseCase,
+    GetUsersUseCase,
+    CreateApplicationUserUseCase,
     { provide: IApplicationRepository, useClass: PrismaApplicationRepository },
+    {
+      provide: IApplicationUserRepository,
+      useClass: PrismaApplicationUserRepository,
+    },
   ],
-  imports: [AuthModule],
+  imports: [AuthModule, UserModule],
 })
 export class ApplicationModule {}

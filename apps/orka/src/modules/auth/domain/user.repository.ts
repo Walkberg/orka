@@ -1,7 +1,7 @@
-import { User } from './user.entity';
+import { AuthUser } from './auth-user.entity';
 
 export abstract class IUserRepository {
-  abstract findByEmail(email: string): Promise<User | null>;
+  abstract findByEmail(email: string): Promise<AuthUser | null>;
 
-  abstract save(user: User): Promise<User>;
+  abstract save(user: AuthUser): Promise<AuthUser>;
 }

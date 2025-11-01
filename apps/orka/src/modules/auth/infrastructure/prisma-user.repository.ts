@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../infra/prisma/prisma.service';
 import { IUserRepository } from '../domain/user.repository';
-import { User } from '../domain/user.entity';
+import { AuthUser } from '../domain/auth-user.entity';
 
 @Injectable()
 export class PrismaUserRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<AuthUser | null> {
     const record = await this.prisma.user.findUnique({
       where: { email },
     });
     return record
-      ? new User(
+      ? new AuthUser(
           record.id,
           record.email,
           record.password,
-          record.firstName ?? undefined,
-          record.lastName ?? undefined,
+          record.firstName ?? '',
+          record.lastName ?? '',
         )
       : null;
   }
 
-  async save(user: User): Promise<User> {
+  async save(user: AuthUser): Promise<AuthUser> {
     const record = await this.prisma.user.upsert({
       where: { id: user.id },
       update: {
@@ -38,12 +38,12 @@ export class PrismaUserRepository implements IUserRepository {
         password: user.password,
       },
     });
-    return new User(
+    return new AuthUser(
       record.id,
       record.email,
       record.password,
-      record.firstName ?? undefined,
-      record.lastName ?? undefined,
+      record.firstName ?? '',
+      record.lastName ?? '',
     );
   }
 }
