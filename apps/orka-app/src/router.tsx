@@ -1,5 +1,11 @@
 import AppLayout from './components/AppLayout';
-import { SignUpPage, SignInPage, NewAppPage, AppUsersPage } from './pages';
+import {
+  SignUpPage,
+  SignInPage,
+  NewAppPage,
+  AppUsersPage,
+  AppListPage,
+} from './pages';
 import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
@@ -18,6 +24,10 @@ export const router = createBrowserRouter([
         path: 'app',
         element: <AppLayout />,
         children: [
+          {
+            index: true,
+            element: <AppListPage />,
+          },
           {
             path: 'new',
             element: <NewAppPage />,
