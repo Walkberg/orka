@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useParams } from 'react-router-dom';
 import { useOrka } from '@orka-react';
 import {
@@ -25,15 +26,24 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
 } from '@walkberg-ui';
 import {
-  CreateUserRequest,
+  CreateApplicationUserRequest,
   ApplicationUser,
 } from '@orka-react/api/orka-client';
+import { CalendarIcon, PlusIcon, SearchIcon } from 'lucide-react';
 
 export function AppUsersPage() {
   const { id } = useParams<{ id: string }>();
   const { orkaClient } = useOrka();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [applicationUsers, setApplicationUsers] = useState<ApplicationUser[]>(
     []
@@ -44,12 +54,30 @@ export function AppUsersPage() {
     'default'
   );
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newUserFormData, setNewUserFormData] = useState<CreateUserRequest>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [newUserFormData, setNewUserFormData] =
+    useState<CreateApplicationUserRequest>({
+      appId: id ?? '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    });
+
+  // Effect for keyboard shortcut to open command palette
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault(); // Prevent default browser behavior
+        setShowCommandPalette((prev) => !prev);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     loadUsers();
@@ -71,9 +99,10 @@ export function AppUsersPage() {
   const handleCreateUser = async () => {
     if (!id) return;
     try {
-      await orkaClient.createAppUser(id, newUserFormData);
+      await orkaClient.createAppUser({ ...newUserFormData });
       setShowCreateModal(false);
       setNewUserFormData({
+        appId: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -87,7 +116,7 @@ export function AppUsersPage() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setNewUserFormData((prev: CreateUserRequest) => ({
+    setNewUserFormData((prev: CreateApplicationUserRequest) => ({
       ...prev,
       [name]: value,
     }));
@@ -123,6 +152,31 @@ export function AppUsersPage() {
     return 0;
   });
 
+  // Command palette actions
+  const handleCommandSelect = useCallback(
+    (command: string) => {
+      switch (command) {
+        case 'create-user':
+          setShowCreateModal(true);
+          setShowCommandPalette(false); // Close command palette after selecting
+          break;
+        case 'go-dashboard':
+          navigate('/dashboard'); // Assuming '/dashboard' is the route for the dashboard
+          setShowCommandPalette(false);
+          break;
+        case 'search-user':
+          // Focus the existing search input
+          document.getElementById('user-search-input')?.focus();
+          setShowCommandPalette(false);
+          break;
+        // Add more commands as needed
+        default:
+          setShowCommandPalette(false);
+      }
+    },
+    [navigate, id]
+  ); // Include id if needed for other commands
+
   if (loading) {
     return <div>Loading users...</div>;
   }
@@ -134,6 +188,7 @@ export function AppUsersPage() {
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center space-x-4">
           <Input
+            id="user-search-input" // Added ID for focusing
             placeholder="Search users..."
             value={searchTerm}
             onChange={handleSearchChange}
@@ -259,6 +314,42 @@ export function AppUsersPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Command Palette Dialog */}
+      <CommandDialog
+        open={showCommandPalette}
+        onOpenChange={setShowCommandPalette}
+        //label="Command Palette" // Added label for accessibility
+      >
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Actions">
+            <CommandItem onSelect={() => handleCommandSelect('create-user')}>
+              <Button variant="ghost" className="w-full justify-start px-2">
+                <PlusIcon className="mr-2 h-4 w-4" />
+                Create New User
+              </Button>
+            </CommandItem>
+            <CommandItem onSelect={() => handleCommandSelect('go-dashboard')}>
+              <Button variant="ghost" className="w-full justify-start px-2">
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                Go to Dashboard
+              </Button>
+            </CommandItem>
+            <CommandItem onSelect={() => handleCommandSelect('search-user')}>
+              <Button variant="ghost" className="w-full justify-start px-2">
+                <SearchIcon className="mr-2 h-4 w-4" />
+                Search User
+              </Button>
+            </CommandItem>
+          </CommandGroup>
+          <CommandSeparator />
+          <CommandGroup heading="Navigation">
+            {/* Add more navigation commands if needed */}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </div>
   );
 }
