@@ -4,6 +4,8 @@ import type {
   LoginArgs,
   RegisterArgs,
   OrganizationNew,
+  CreateUserArgs,
+  User,
 } from './orka-client';
 import axios from './client';
 
@@ -18,6 +20,13 @@ export class OrkaClientImpl implements IOrkaClient {
     if (accessToken) {
       this.setToken(accessToken);
     }
+  }
+  async getAppUsers(appId: string): Promise<User[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  async createAppUser(appId: string, userData: CreateUserArgs): Promise<User> {
+    throw new Error('Method not implemented.');
   }
 
   setToken(token: string) {

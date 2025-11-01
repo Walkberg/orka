@@ -33,6 +33,13 @@ export type Organization = {
   description?: string;
 };
 
+export type CreateUserArgs = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
 export interface IOrkaClient {
   login(args: LoginArgs): Promise<AccessTokenResponse>;
 
@@ -52,6 +59,10 @@ export interface IOrkaClient {
     id: string,
     data: { name?: string; description?: string }
   ): Promise<any>;
+
+  getAppUsers(appId: string): Promise<User[]>;
+
+  createAppUser(appId: string, userData: CreateUserArgs): Promise<User>;
 
   setToken(token: string): void;
 

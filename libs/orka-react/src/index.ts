@@ -6,3 +6,4 @@ export { SignedOut } from './components/SignedOut';
 export * from './components';
 export * from './providers/OrkaProvider';
 export * from './providers/OrkaAuthProvider';
+export * from './api/orka-client';
