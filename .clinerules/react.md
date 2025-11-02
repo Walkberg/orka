@@ -29,3 +29,6 @@ Style and Accessibility:
 - Use semantic HTML elements.
 - Add appropriate ARIA attributes.
 - Ensure keyboard navigation.
+
+Feature base architecture
+- Apply the pattern in the "feature-context-pattern.md" file
