@@ -3,11 +3,11 @@ import {
   SignUpPage,
   SignInPage,
   NewAppPage,
-  AppUsersPage,
   AppListPage,
-  ApplicationOrganizationsPage, // Import the new page
+  ApplicationOrganizationsPage,
 } from './pages';
 import { createBrowserRouter } from 'react-router-dom';
+import { AppUsersPage } from './features/application-user/pages/AppUsersPage';
 
 export const router = createBrowserRouter([
   {

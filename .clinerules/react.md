@@ -1,6 +1,6 @@
 ---
 description: Apply React standards for component structure, separation of concerns, state management, and accessibility when developing with React in `apps/frontend`.
-globs: apps/frontend/**/*.tsx
+globs: /**/*.tsx
 alwaysApply: false
 ---
 
@@ -8,6 +8,7 @@ Component Structure:
 - Use functional components.
 - Keep components light and small.
 - Strongly type `props`.
+- Alway export instead of default export
 
 Separation:
 - Split into sub-components by responsibility.
