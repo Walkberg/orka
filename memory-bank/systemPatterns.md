@@ -28,3 +28,7 @@ The Orka project follows a modular architecture, with distinct applications and 
 - User authentication and authorization flow.
 - Application and organization creation/management workflows.
 - Data persistence and retrieval via Prisma.
+
+**Design Pattern** 
+when implementing/refactoring a new page/feature in the react application you should see if you can apply one pattern in the 
+feature-context-pattern.md

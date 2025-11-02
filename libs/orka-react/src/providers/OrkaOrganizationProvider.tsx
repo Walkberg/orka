@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { useOrka } from './OrkaProvider';
 import { Organization, OrganizationNew } from '../api/orka-client';
+import { useAuth } from './OrkaAuthProvider';
 
 type OrganizationContextType = {
   organizations: Organization[];
@@ -31,6 +32,7 @@ export const OrkaOrganizationProvider = ({
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   const { orkaClient } = useOrka();
+  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -42,6 +44,11 @@ export const OrkaOrganizationProvider = ({
         setCurrentOrganizationId(orgs[0].id);
       }
     };
+
+    if (!isSignedIn) {
+      return;
+    }
+
     fetchOrganizations();
   }, [orkaClient]);
 

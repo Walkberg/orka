@@ -3,7 +3,7 @@ import { ApplicationOrganizationsProvider } from '../features/organizations/prov
 import OrganizationFilter from '../features/organizations/components/OrganizationFilter';
 import OrganizationList from '../features/organizations/components/OrganizationList';
 
-const ApplicationOrganizationsPage: React.FC = () => {
+export const ApplicationOrganizationsPage: React.FC = () => {
   return (
     <ApplicationOrganizationsProvider>
       <div>
@@ -14,5 +14,3 @@ const ApplicationOrganizationsPage: React.FC = () => {
     </ApplicationOrganizationsProvider>
   );
 };
-
-export default ApplicationOrganizationsPage;

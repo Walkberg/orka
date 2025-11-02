@@ -19,7 +19,7 @@ const OrganizationFilter: React.FC = () => {
   };
 
   const handleSortChange = (value: string) => {
-    updateSortBy(value as any); // Cast to OrganizationSortBy type
+    updateSortBy(value as any);
   };
 
   return (

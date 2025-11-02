@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
             element: <AppUsersPage />,
           },
           {
-            path: ':id/organizations', // New route for organizations
+            path: ':id/organizations',
             element: <ApplicationOrganizationsPage />,
           },
         ],
