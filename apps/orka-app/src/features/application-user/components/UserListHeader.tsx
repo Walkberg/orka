@@ -26,7 +26,7 @@ export const UserListHeader: React.FC = () => {
           id="user-search-input"
           placeholder="Search users..."
           value={searchTerm}
-          onChange={(e) => handleSearchChange(e.target.name)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="w-64"
         />
         <Select value={sortBy} onValueChange={handleSortChange as any}>

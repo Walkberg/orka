@@ -31,14 +31,13 @@ export const UserTable: React.FC = () => {
         .includes(searchTerm.toLowerCase())
   );
 
-  // Sort users based on sortBy
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortBy === 'email') {
       return a.user.email.localeCompare(b.user.email);
     } else if (sortBy === 'lastname') {
       return a.user.lastname.localeCompare(b.user.lastname);
     }
-    return 0; // Default sort
+    return 0;
   });
 
   if (loading) {
