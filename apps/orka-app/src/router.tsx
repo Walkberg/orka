@@ -5,6 +5,7 @@ import {
   NewAppPage,
   AppUsersPage,
   AppListPage,
+  ApplicationOrganizationsPage, // Import the new page
 } from './pages';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
           {
             path: ':id/users',
             element: <AppUsersPage />,
+          },
+          {
+            path: ':id/organizations', // New route for organizations
+            element: <ApplicationOrganizationsPage />,
           },
         ],
       },

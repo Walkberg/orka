@@ -65,6 +65,10 @@ export type ApplicationNew = {
   name: string;
 };
 
+export type ApplicationOrganizationFiltering = {
+  applicationId: string;
+};
+
 export interface IOrkaClient {
   setToken(token: string): void;
 
@@ -81,6 +85,10 @@ export interface IOrkaClient {
   getOrganizationById(id: string): Promise<Organization>;
 
   getUserOrganizations(): Promise<Organization[]>;
+
+  getApplicationOrganizations(
+    req: ApplicationOrganizationFiltering
+  ): Promise<Organization[]>;
 
   updateOrganization(req: OrganizationUpdate): Promise<Organization>;
 

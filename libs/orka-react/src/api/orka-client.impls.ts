@@ -11,6 +11,7 @@ import type {
   ApplicationNew,
   OrganizationUpdate,
   Organization,
+  ApplicationOrganizationFiltering,
 } from './orka-client';
 import axios from './client';
 
@@ -112,6 +113,12 @@ export class OrkaClientImpl implements IOrkaClient {
   async getUserOrganizations(): Promise<Organization[]> {
     const response = await this.axios.get('/organizations/me');
     return response.data.organizations;
+  }
+
+  async getApplicationOrganizations(
+    req: ApplicationOrganizationFiltering
+  ): Promise<Organization[]> {
+    throw new Error('Method not implemented.');
   }
 
   async updateOrganization(req: OrganizationUpdate): Promise<Organization> {
