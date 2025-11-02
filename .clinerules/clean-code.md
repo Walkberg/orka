@@ -2,10 +2,9 @@
 description: APPLY Clean Code principles WHENEVER writing code
 alwaysApply: true
 ---
-Do not type useless comment
 
 Code Quality:
-- Write no comments
+- ALways Write no comments
 - Use strict types only
 - Disallow untyped values
 - Use explicit constants, never magic numbers
